@@ -5,6 +5,7 @@
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\std_image_loader.cpp" />
     <ClCompile Include="src\shader_s.cpp" />
+    <ClCompile Include="src\tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="materials\avatar.jpg" />
@@ -12,6 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\shader_s.h" />
+    <ClInclude Include="src\tile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shaders\vertexShader.vs" />

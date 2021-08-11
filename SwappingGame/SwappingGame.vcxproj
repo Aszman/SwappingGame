@@ -24,6 +24,7 @@
     <ProjectGuid>{5370df11-b733-4044-917c-b2a5920057a1}</ProjectGuid>
     <RootNamespace>SwappingGame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>SwappingGame</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -149,6 +150,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\shader_s.cpp" />
     <ClCompile Include="src\std_image_loader.cpp" />
+    <ClCompile Include="src\tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="materials\avatar.jpg" />
@@ -156,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\shader_s.h" />
+    <ClInclude Include="src\tile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shaders\fragmentShader.fs" />

@@ -2,13 +2,16 @@
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <iostream>
 
 #include "shader_s.h"
+#include "tile.h"
 
 void processInput(GLFWwindow* window);
-
-const int SIZE = 8;
 
 int main()
 {
@@ -40,39 +43,8 @@ int main()
 
     glViewport(0, 0, width, height);
 
-    float vertices[] =
-    {
-        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-        -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-         1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-         1.0f, -1.0f, 0.0f, 1.0f, 0.0f
-    };
-
-    unsigned int indices[] =
-    {
-        0, 1, 2,
-        0, 2, 3
-    };
-
-    GLuint VBO, VAO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-
-    Shader titleShader("src/Shaders/vertexShader.vs", "src/Shaders/fragmentShader.fs");
+ 
+    Shader tileShader("src/Shaders/vertexShader.vs", "src/Shaders/fragmentShader.fs");
 
     GLuint texture;
     glGenTextures(1, &texture);
@@ -93,26 +65,50 @@ int main()
     }
     stbi_image_free(data);
 
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+    glm::mat4 projection = glm::ortho(0.0f, 1.0f, 0.0f, 1.0f, 0.1f, 100.0f);
+
+
+    tileShader.use();
+    tileShader.setMat4("projection", projection);
+    tileShader.setMat4("view", view);
+
+    Tile title1(0, 8);
+    Tile title2(1, 7);
+    Tile title3(2, 6);
+    Tile title4(3, 5);
+    Tile title5(4, 4);
+    Tile title6(5, 3);
+    Tile title7(6, 2);
+    Tile title8(7, 1);
+    Tile title9(8, 0);
 
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindTexture(GL_TEXTURE_2D, texture);
-        titleShader.use();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        title1.draw();
+        title2.draw();
+        title3.draw();
+        title4.draw();
+        title5.draw();
+        title6.draw();
+        title7.draw();
+        title8.draw();
+        title9.draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    titleShader.terminate();
-    glDeleteBuffers(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    tileShader.terminate();
     glfwTerminate();
 
     return 0;
