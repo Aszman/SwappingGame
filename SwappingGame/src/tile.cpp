@@ -1,20 +1,60 @@
 #include "tile.h"
 #include <iostream>
 
-Tile::Tile(unsigned int _realID, unsigned int _expectedID) :realID(_realID), expectedID(_expectedID)
+Tile::Tile(unsigned int _realID, unsigned int _expectedID)
 {
-	float tileWidth = 1 / float(size);
-	float tileHeight = 1 / float(size);
+	set(_realID, _expectedID);
+}
+
+Tile::Tile(const Tile & other)
+{
+	this->copy(other);
+	std::cout << "copy constructor\n";
+}
+
+Tile& Tile::operator=(const Tile & other)
+{
+	if (this != &other)
+	{
+		this->terminate();
+		this->copy(other);
+	}
+	std::cout << "copy assignment\n";
+	return *this;
+}
+
+Tile::~Tile()
+{
+	this->terminate();
+}
+
+void Tile::draw()const
+{
+	glBindVertexArray(this->VAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+}
+
+void Tile::set(unsigned int _realID, unsigned int _expectedID)
+{
+	this->realID = _realID;
+	this->expectedID = _expectedID;
+
+	float tileWidth = 1 / float(SIZE);
+	float tileHeight = 1 / float(SIZE);
+
 	setTileCoords(tileWidth, tileHeight);
-	setTextCoords( tileWidth, tileHeight);
+	setTextCoords(tileWidth, tileHeight);
+	genBuffers();
 	setBuffers();
+
 }
 
 void Tile::setTileCoords(float & tileWidth, float & tileHeight)
 {
 	float xTile, yTile;
-	xTile = (realID % size) * tileWidth;
-	yTile = (realID / size) * tileHeight;
+	xTile = (realID % SIZE) * tileWidth;
+	yTile = (realID / SIZE) * tileHeight;
 	
 	//setting Tile positions
 	this->coords[0] = this->coords[5] = xTile;
@@ -24,11 +64,11 @@ void Tile::setTileCoords(float & tileWidth, float & tileHeight)
 	this->coords[2] = this->coords[7] = this->coords[12] = this->coords[17] = 0;
 }
 
-void Tile::setTextCoords(float &tileWidth, float &tileHeight)
+void Tile::setTextCoords(float & tileWidth, float & tileHeight)
 {
 	float xTex, yTex;
-	xTex = (expectedID % size) * tileWidth;
-	yTex = (expectedID / size) * tileHeight;
+	xTex = (expectedID % SIZE) * tileWidth;
+	yTex = (expectedID / SIZE) * tileHeight;
 
 	//setting Texture positions
 	this->coords[3] = this->coords[8] = xTex;
@@ -37,12 +77,15 @@ void Tile::setTextCoords(float &tileWidth, float &tileHeight)
 	this->coords[9] = this->coords[14] = yTex + tileHeight;
 }
 
+void Tile::genBuffers()
+{
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
+}
+
 void Tile::setBuffers()
 {
-	glGenVertexArrays(1, &this->VAO);
-	glGenBuffers(1, &this->VBO);
-	glGenBuffers(1, &this->EBO);
-	
 	glBindVertexArray(this->VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
@@ -53,19 +96,28 @@ void Tile::setBuffers()
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void Tile::draw()const
+void Tile::copy(const Tile & other)
 {
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-}
+	this->realID = other.realID;
+	this->expectedID = other.expectedID;
 
-Tile::~Tile()
-{
-	this->terminate();
+
+	for (int i = 0; i < 20; ++i)
+	{
+		this->coords[i] = other.coords[i];
+	}
+
+	this->genBuffers();
+	this->setBuffers();
 }
 
 void Tile::terminate()

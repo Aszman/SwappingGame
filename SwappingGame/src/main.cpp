@@ -7,6 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+#include <vector>
 
 #include "shader_s.h"
 #include "tile.h"
@@ -19,12 +20,13 @@ int main()
     int width, height, nrChannels;
     unsigned char* data = stbi_load("materials/picture.jpg", &width, &height, &nrChannels, 0);
 
+    int scrWidth = width, scrHeight = height;
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
-    GLFWwindow* window = glfwCreateWindow(width, height, "Swapping Game", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(scrWidth, scrHeight, "Swapping Game", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -41,7 +43,7 @@ int main()
         return -1;
     }
 
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, scrWidth, scrHeight);
 
  
     Shader tileShader("src/Shaders/vertexShader.vs", "src/Shaders/fragmentShader.fs");
@@ -71,19 +73,12 @@ int main()
     glm::mat4 projection = glm::ortho(0.0f, 1.0f, 0.0f, 1.0f, 0.1f, 100.0f);
 
 
-    tileShader.use();
-    tileShader.setMat4("projection", projection);
-    tileShader.setMat4("view", view);
+    Tile* tiles = new Tile[SIZE * SIZE];
 
-    Tile title1(0, 8);
-    Tile title2(1, 7);
-    Tile title3(2, 6);
-    Tile title4(3, 5);
-    Tile title5(4, 4);
-    Tile title6(5, 3);
-    Tile title7(6, 2);
-    Tile title8(7, 1);
-    Tile title9(8, 0);
+    for (int i = 0; i < SIZE * SIZE; ++i)
+    {
+        tiles[i].set(i, SIZE * SIZE - i - 1);
+    }
 
     while (!glfwWindowShouldClose(window))
     {
@@ -93,20 +88,19 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindTexture(GL_TEXTURE_2D, texture);
+        tileShader.use();
+        tileShader.setMat4("projection", projection);
+        tileShader.setMat4("view", view);
 
-        title1.draw();
-        title2.draw();
-        title3.draw();
-        title4.draw();
-        title5.draw();
-        title6.draw();
-        title7.draw();
-        title8.draw();
-        title9.draw();
+        for (int i = 0; i < SIZE * SIZE; ++i)
+        {
+            tiles[i].draw();
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
 
     tileShader.terminate();
     glfwTerminate();
@@ -119,4 +113,3 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }
-

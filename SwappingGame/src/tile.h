@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 
-const int size = 3;
+const int SIZE = 32;
 
 extern int width, height;
 
@@ -13,8 +13,20 @@ const unsigned int indices[] =
     0, 2, 3
 };
 
+
 class Tile
 {
+
+public:
+	Tile(unsigned int = 0, unsigned int = 0);
+	Tile(const Tile&);
+
+	Tile& operator=(const Tile&);
+
+	~Tile();
+
+	void draw()const;
+	void set(unsigned int, unsigned int);
 
 private:
 	GLuint VAO, VBO, EBO;
@@ -23,16 +35,12 @@ private:
 	
 	void setTileCoords(float &, float &);
 	void setTextCoords(float &, float &);
+
+	void genBuffers();
 	void setBuffers();
 
+	void copy(const Tile&);
 	void terminate();
-
-public:
-
-	Tile(unsigned int, unsigned int);
-	~Tile();
-
-	void draw()const;
 };
 
 #endif 
