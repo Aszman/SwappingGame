@@ -16,7 +16,9 @@ public:
 
 	Shader(const char*, const char*);
 
-	void use();
+	~Shader();
+
+	void use()const;
 
 	void setBool(const std::string&, bool) const;
 	void setInt(const std::string&, int) const;

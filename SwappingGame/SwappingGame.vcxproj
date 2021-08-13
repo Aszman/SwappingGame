@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\board.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\shader_s.cpp" />
@@ -157,11 +158,14 @@
     <Image Include="materials\picture.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\board.h" />
     <ClInclude Include="src\shader_s.h" />
     <ClInclude Include="src\tile.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Shaders\fragmentShader.frag" />
     <None Include="src\Shaders\fragmentShader.fs" />
+    <None Include="src\Shaders\vertexShader.vert" />
     <None Include="src\Shaders\vertexShader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

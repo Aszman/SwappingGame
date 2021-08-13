@@ -3,8 +3,6 @@
 
 #include <glad/glad.h>
 
-const int SIZE = 32;
-
 extern int width, height;
 
 const unsigned int indices[] =
@@ -18,7 +16,7 @@ class Tile
 {
 
 public:
-	Tile(unsigned int = 0, unsigned int = 0);
+	Tile(size_t = 0, size_t = 0, size_t = 1);
 	Tile(const Tile&);
 
 	Tile& operator=(const Tile&);
@@ -26,11 +24,11 @@ public:
 	~Tile();
 
 	void draw()const;
-	void set(unsigned int, unsigned int);
+	void set(size_t, size_t, size_t);
 
 private:
 	GLuint VAO, VBO, EBO;
-	unsigned int realID, expectedID;
+	size_t realID, expectedID, size;
 	float coords[20];
 	
 	void setTileCoords(float &, float &);
