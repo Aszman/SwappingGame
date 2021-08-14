@@ -2,16 +2,9 @@
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include <iostream>
-#include <vector>
 
-#include "shader_s.h"
 #include "board.h"
-#include "tile.h"
 
 
 void processInput(GLFWwindow* window);
@@ -71,7 +64,7 @@ int main()
     stbi_image_free(data);
 
 
-    Board board(4, "src/Shaders/vertexShader.vert", "src/Shaders/fragmentShader.frag");
+    Board board(4);
 
 
     while (!glfwWindowShouldClose(window))
