@@ -5,6 +5,7 @@ in vec2 TexCoord;
 uniform float alpha;
 uniform sampler2D ourTexture;
 
+
 out vec4 FragColor;
 
 void main()
