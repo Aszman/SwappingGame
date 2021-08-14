@@ -24,6 +24,7 @@ public:
 	void setInt(const std::string&, int) const;
 	void setFloat(const std::string&, float) const;
 
+	void set2Float(const std::string&, glm::vec2&) const;
 	void set3Float(const std::string&, float, float, float) const;
 	void set3Float(const std::string&, glm::vec3&) const;
 	void set4Float(const std::string&, float, float, float, float) const;
