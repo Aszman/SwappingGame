@@ -3,42 +3,25 @@
 
 #include <glad/glad.h>
 
-extern int width, height;
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/matrix_transform_2d.hpp>
 
-const unsigned int indices[] =
-{
-    0, 1, 2,
-    0, 2, 3
-};
-
+#include "shader_s.h"
 
 class Tile
 {
-
 public:
 	Tile(size_t = 0, size_t = 0, size_t = 1);
-	Tile(const Tile&);
-
-	Tile& operator=(const Tile&);
-
 	~Tile();
 
-	void draw()const;
+	void draw(const Shader&);
 	void set(size_t, size_t, size_t);
 
 private:
-	GLuint VAO, VBO, EBO;
-	size_t realID, expectedID, size;
-	float coords[20];
-	
-	void setTileCoords(float &, float &);
-	void setTextCoords(float &, float &);
+	size_t positionID, textureID, size;
 
-	void genBuffers();
-	void setBuffers();
-
-	void copy(const Tile&);
-	void terminate();
+	glm::vec3 tilePositionVector;
+	glm::vec2 texturePositionVector;
 };
-
 #endif 
