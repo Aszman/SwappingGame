@@ -13,7 +13,7 @@ int main()
 {
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
-    unsigned char* data = stbi_load("materials/picture.jpg", &width, &height, &nrChannels, 0);
+    unsigned char* data = stbi_load("materials/avatar.jpg", &width, &height, &nrChannels, 0);
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -70,6 +70,7 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
+        board.move(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
