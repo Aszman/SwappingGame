@@ -2,7 +2,6 @@
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
 
-#include <iostream>
 
 #include "board.h"
 
@@ -64,7 +63,7 @@ int main()
     stbi_image_free(data);
 
 
-    Board board(4);
+    Board board(3);
 
 
     while (!glfwWindowShouldClose(window))

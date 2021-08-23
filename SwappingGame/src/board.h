@@ -1,13 +1,15 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <algorithm>
+#include <ctime>
+#include <cstdlib> 
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 
 #include "tile.h"
 #include "shader_s.h"
@@ -35,7 +37,6 @@ public:
 	void move(GLFWwindow*);
 
 private:
-
 	Shader shader;
 
 	Tile* tiles;
@@ -51,6 +52,10 @@ private:
 
 	void setCoords();
 	void setBuffers();
+	void randomize();
+
+	static bool solvable(size_t*, size_t);
+	static int myrandom(int i);
 };
 
 #endif 

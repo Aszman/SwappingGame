@@ -5,7 +5,6 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/matrix_transform_2d.hpp>
 
 #include "shader_s.h"
 
@@ -25,7 +24,6 @@ private:
 
 	glm::vec3 tilePositionVector;
 	glm::vec2 texturePositionVector;
-
 
 	void setPosition();
 };

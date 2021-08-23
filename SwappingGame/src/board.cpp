@@ -11,11 +11,8 @@ Board::Board(size_t _rowSize) : rowSize(_rowSize), tilesAmount(_rowSize*_rowSize
 	setBuffers();
 
 	tiles = new Tile[tilesAmount - 1];
-
-	for (size_t i = 0; i < tilesAmount - 1; ++i)
-	{
-		tiles[i].set(i, tilesAmount - i - 2, rowSize);
-	}
+	
+	randomize();
 
 	blankTile.set(tilesAmount - 1, tilesAmount - 1, rowSize);
 
@@ -157,4 +154,50 @@ void Board::setBuffers()
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+}
+
+void Board::randomize()
+{
+	std::srand(unsigned(std::time(0)));
+
+	size_t* temp = new size_t[this->tilesAmount - 1];
+	for (int i = 0; i < this->tilesAmount - 1; ++i)
+	{
+		temp[i] = i;
+	}
+
+	do
+	{
+		std::random_shuffle(temp, temp + this->tilesAmount - 1, Board::myrandom);
+	} while (!Board::solvable(temp, this->tilesAmount - 1));
+
+	for (int i = 0; i < this->tilesAmount - 1; ++i)
+	{
+		tiles[i].set(i, temp[i], this->rowSize);
+		std::cout << temp[i] << " ";
+	}
+
+	delete[] temp;
+}
+
+int Board::myrandom(int i)
+{
+	return std::rand() % i;
+}
+
+bool Board::solvable(size_t* array, size_t size)
+{
+	int count = 0;
+
+	for (int i = 0; i < size - 1; ++i)
+	{
+		for (int j = i + 1; j < size; ++j)
+		{
+			if (array[i] > array[j])
+			{
+				++count;
+			}
+		}
+	}
+	return count % 2 == 0 ? true : false;
 }
