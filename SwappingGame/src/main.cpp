@@ -12,14 +12,14 @@ int main()
 {
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
-    unsigned char* data = stbi_load("materials/avatar.jpg", &width, &height, &nrChannels, 0);
+    unsigned char* data = stbi_load("materials/picture.jpg", &width, &height, &nrChannels, 0);
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
-    int scrWidth = width, scrHeight = height;
+    int scrWidth = std::max(width, 720), scrHeight = std::max(height,540);
     GLFWwindow* window = glfwCreateWindow(scrWidth, scrHeight, "Swapping Game", NULL, NULL);
 
     if (window == NULL)
@@ -63,7 +63,7 @@ int main()
     stbi_image_free(data);
 
 
-    Board board(3);
+    Board board(8);
 
 
     while (!glfwWindowShouldClose(window))

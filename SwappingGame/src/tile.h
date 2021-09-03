@@ -12,10 +12,14 @@ class Tile
 {
 public:
 	Tile(size_t = 0, size_t = 0, size_t = 1);
+	Tile(Tile&);
+	Tile(Tile&&);
 	~Tile();
 
+	Tile& operator=(Tile&);
+	Tile& operator=(Tile&&);
+
 	void draw(const Shader&)const;
-	void set(size_t, size_t, size_t);
 	void swap(Tile&);
 	size_t getPositionID()const;
 
@@ -25,6 +29,10 @@ private:
 	glm::vec3 tilePositionVector;
 	glm::vec2 texturePositionVector;
 
-	void setPosition();
+	void setPositionVector();
+	void setTextureVector();
+
+	void copy(Tile&);
+	void move(Tile&);
 };
 #endif 

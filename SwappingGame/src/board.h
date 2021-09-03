@@ -17,6 +17,7 @@
 extern const char* vertexPath;
 extern const char* fragmentPath;
 
+//const indices to render square tile
 const unsigned int indices[] =
 {
 	0, 1, 2,
@@ -46,9 +47,9 @@ private:
 
 	float tileData[12]; //position of tile and texture on tile;
 	const size_t rowSize, tilesAmount;
-	float tileWidth, tileHeight;
+	const float tileWidth, tileHeight;
 
-	bool up, down, left, right;
+	bool up, down, left, right; //boolean values used to move blank tile
 
 	void setCoords();
 	void setBuffers();

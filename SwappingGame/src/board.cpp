@@ -3,6 +3,8 @@
 const char* vertexPath = "src/Shaders/vertexShader.vert";
 const char* fragmentPath = "src/Shaders/fragmentShader.frag";
 
+
+//constructor 
 Board::Board(size_t _rowSize) : rowSize(_rowSize), tilesAmount(_rowSize*_rowSize), shader(vertexPath, fragmentPath), tileHeight(1 / float(rowSize)), tileWidth(1 / float(rowSize))
 {
 	up = down = left = right = false;
@@ -14,7 +16,7 @@ Board::Board(size_t _rowSize) : rowSize(_rowSize), tilesAmount(_rowSize*_rowSize
 	
 	randomize();
 
-	blankTile.set(tilesAmount - 1, tilesAmount - 1, rowSize);
+	blankTile = Tile(tilesAmount - 1, tilesAmount - 1, rowSize);
 
 	glm::mat4 view = glm::mat4(1.0f);
 	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
@@ -25,6 +27,7 @@ Board::Board(size_t _rowSize) : rowSize(_rowSize), tilesAmount(_rowSize*_rowSize
 	this->shader.setMat4("view", view);
 }
 
+//destructor
 Board::~Board()
 {
 	delete[] this->tiles;
@@ -32,8 +35,11 @@ Board::~Board()
 	glDeleteVertexArrays(1, &this->VAO);
 	glDeleteBuffers(1, &this->VBO);
 	glDeleteBuffers(1, &this->EBO);
+
+	this->shader.terminate();
 }
 
+//method drawing board on current window
 void Board::draw()const
 {
 	glBindVertexArray(this->VAO);
@@ -51,17 +57,23 @@ void Board::draw()const
 	blankTile.draw(this->shader);
 }
 
-Tile& Board::find(size_t ID)
+//method finding tile on board with passed position ID
+//Get: position ID of searching tile
+//Give: reference to searching tile
+//Error: when ID doesn't exist return blankTile
+Tile& Board::find(size_t positionID)
 {
 	for (int i = 0; i < this->tilesAmount - 1; ++i)
 	{
-		if (this->tiles[i].getPositionID() == ID)
+		if (this->tiles[i].getPositionID() == positionID)
 		{
 			return this->tiles[i];
 		}
 	}
+	return this->blankTile;
 }
 
+//method managing moving around board by blank tile
 void Board::move(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && this->up == false)
@@ -121,6 +133,7 @@ void Board::move(GLFWwindow* window)
 	}
 }
 
+//method which permanently sets size of tile and texture's fragment
 void Board::setCoords()
 {
 	//x
@@ -135,6 +148,7 @@ void Board::setCoords()
 	this->tileData[2] =	this->tileData[5] = this->tileData[8] = this->tileData[11] = 0.0f;
 }
 
+//method which permanently sets buffers
 void Board::setBuffers()
 {
 	glGenVertexArrays(1, &this->VAO);
@@ -156,6 +170,7 @@ void Board::setBuffers()
 	glEnableVertexAttribArray(1);
 }
 
+//method to ranodmize tiles 
 void Board::randomize()
 {
 	std::srand(unsigned(std::time(0)));
@@ -173,18 +188,22 @@ void Board::randomize()
 
 	for (int i = 0; i < this->tilesAmount - 1; ++i)
 	{
-		tiles[i].set(i, temp[i], this->rowSize);
-		std::cout << temp[i] << " ";
+		tiles[i] = Tile(i, temp[i], this->rowSize);
 	}
 
 	delete[] temp;
 }
 
+//randomizing core
 int Board::myrandom(int i)
 {
 	return std::rand() % i;
 }
 
+
+//method checking if board is solvable
+//Get: array of texture IDs; length of array
+//Give: True - is solvable; False - is not
 bool Board::solvable(size_t* array, size_t size)
 {
 	int count = 0;
