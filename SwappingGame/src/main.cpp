@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
 
+#include <limits>
 
 #include "board.h"
 
@@ -10,6 +11,20 @@ void processInput(GLFWwindow* window);
 
 int main()
 {
+    size_t board_size;
+
+    std::cout << "Size of the board(number of rows and cols) between 2 and 10:";
+    std::cin >> board_size;
+
+    while (!std::cin.good() || board_size > 10 || board_size < 2)
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        std::cout << "Size of the board(number of rows and cols) between 2 and 10:";
+        std::cin >> board_size;
+    } 
+
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
     unsigned char* data = stbi_load("materials/picture.jpg", &width, &height, &nrChannels, 0);
@@ -18,8 +33,8 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
-    int scrWidth = std::max(width, 720), scrHeight = std::max(height,540);
+
+    int scrWidth = std::max(width, 720), scrHeight = std::max(height, 540);
     GLFWwindow* window = glfwCreateWindow(scrWidth, scrHeight, "Swapping Game", NULL, NULL);
 
     if (window == NULL)
@@ -42,12 +57,12 @@ int main()
 
     glViewport(0, 0, scrWidth, scrHeight);
 
- 
+
     GLuint texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -62,9 +77,7 @@ int main()
     }
     stbi_image_free(data);
 
-
-    Board board(8);
-
+    Board board(board_size);
 
     while (!glfwWindowShouldClose(window))
     {

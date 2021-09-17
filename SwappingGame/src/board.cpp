@@ -76,58 +76,58 @@ Tile& Board::find(size_t positionID)
 //method managing moving around board by blank tile
 void Board::move(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && this->up == false)
+	if ((glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) && this->up == false)
 	{
-		if (this->blankTile.getPositionID() < this->tilesAmount - this->rowSize)
-		{
+		this->up = true;
+
+		if (this->blankTile.getPositionID() < this->tilesAmount - this->rowSize){
 			blankTile.swap(this->find(this->blankTile.getPositionID() + this->rowSize));
-			this->up = true;
 		}
 	}
 
-	else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_RELEASE && this->up == true)
+	else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE && this->up == true)
 	{
 		this->up = false;
 	}
 
-	else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && this->down == false)
+	else if ((glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) && this->down == false)
 	{
-		if (this->blankTile.getPositionID() >= this->rowSize)
-		{
+		this->down = true;
+
+		if (this->blankTile.getPositionID() >= this->rowSize){
 			blankTile.swap(this->find(this->blankTile.getPositionID() - this->rowSize));
-			this->down = true;
 		}
 	}
 
-	else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_RELEASE && this->down == true)
+	else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE && this->down == true)
 	{
 		this->down = false;
 	}
 
-	else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && this->right == false)
+	else if ((glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) && this->right == false)
 	{
-		if (this->blankTile.getPositionID() % this->rowSize != 0)
-		{
+		this->right = true;
+
+		if (this->blankTile.getPositionID() % this->rowSize != 0){
 			blankTile.swap(this->find(this->blankTile.getPositionID() - 1));
-			this->right = true;
 		}
 	}
 
-	else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_RELEASE && this->right == true)
+	else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE && this->right == true)
 	{
 		this->right = false;
 	}
 
-	else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && this->left == false)
+	else if ((glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) && this->left == false)
 	{
-		if (this->blankTile.getPositionID() % this->rowSize != this->rowSize - 1)
-		{
+		this->left = true;
+
+		if (this->blankTile.getPositionID() % this->rowSize != this->rowSize - 1){
 			blankTile.swap(this->find(this->blankTile.getPositionID() + 1));
-			this->left = true;
 		}
 	}
 
-	else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_RELEASE && this->left == true)
+	else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE && this->left == true)
 	{
 		this->left = false;
 	}
