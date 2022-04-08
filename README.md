@@ -6,7 +6,7 @@ Tiny OpenGL game. The player's goal is to arrange jumbled pieces in the right or
 Moving a tile to the empty place is done by pressing *WSAD* or *arrows*.
 
 
-## Building 
+## Building  (only for Windows)
 
 Clone the repository:
 
@@ -16,24 +16,13 @@ git clone https://github.com/Aszman/SwappingGame.git
 
 Run the compiler in the working repository with command below:
 
-(Windows)
 ```bash
 g++ -g -std=c++17 -I.\include\ -L.\lib\ .\src\*.cpp .\src\glad.c -lglfw3dll -o .\debug\SwappingGame.exe
 ```
 
-(Linux)
-```bash
-g++ -g -std=c++17 -I./include/ -L./lib/ ./src/*.cpp ./src/glad.c -lglfw3dll -o ./debug/SwappingGame.out
-```
-
 Run the programm:
 
-(Windows)
 ```bash
 debug\SwappingGame.exe 
 ```
 
-(Linux)
-```bash
-./debug/SwappingGame.out
-```
