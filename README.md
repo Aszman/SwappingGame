@@ -14,10 +14,10 @@ Clone the repository:
 git clone https://github.com/Aszman/SwappingGame.git
 ```
 
-Run the compiler in the working repository with command below:
+Run the compiler in the working directory with command below:
 
 ```bash
-g++ -g -std=c++17 -I.\include\ -L.\lib\ .\src\*.cpp .\src\glad.c -lglfw3dll -o .\debug\SwappingGame.exe
+g++ -std=c++17 -I.\include\ -L.\lib\ .\src\*.cpp .\src\glad.c -lglfw3dll -o .\debug\SwappingGame.exe
 ```
 
 Run the programm:
